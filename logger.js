@@ -31,7 +31,7 @@ const customFormat = winston.format.combine(
     const date = timestamp.split(" ")[0];
     const time = timestamp.split(" ")[1];
 
-    return `BLESS NETWORK | DATE: ${colors.brightCyan}${date}${colors.reset} | TIME: ${colors.brightCyan}${time}${colors.reset} | ` +
+    return `BLESS NETWORK | ${colors.brightCyan}${date}${colors.reset} | ${colors.brightCyan}${time}${colors.reset} | ` +
            `${levelColors[level]}${level.toUpperCase().padEnd(7)}${colors.reset} | ` +
            `${message}`;
   })
