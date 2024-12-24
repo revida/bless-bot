@@ -1,7 +1,7 @@
 const fs = require('fs');
 const axios = require("axios");
-const colors = require('./config/colors.js');
-const logger = require('./config/logger.js');
+const colors = require('./colors.js');
+const logger = require('./logger.js');
 
 const Utils = {
   sleep: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
