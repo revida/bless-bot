@@ -200,7 +200,7 @@ class PingAutomation {
     }
   }
 
-  async start(intervalMinutes = 1) {
+  async start(intervalMinutes = 5) {
     if (this.isRunning) {
       logger.warn(`${colors.warning}Automation is already running${colors.reset}`);
       return;
