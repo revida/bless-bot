@@ -1,7 +1,7 @@
 const fs = require('fs');
 const axios = require("axios");
-const colors = require('./colors.js');
-const logger = require('./logger.js');
+const colors = require('./config/colors.js');
+const logger = require('./config/logger.js');
 
 const Utils = {
   sleep: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
@@ -63,6 +63,21 @@ class ApiClient {
     } catch (error) {
       logger.error(`${colors.error}Health check failed: ${error.message}${colors.reset}`);
       return false;
+    }
+  }
+
+  async getUserOverview(token) {
+    try {
+      const response = await this.makeRequest("get", "/api/v1/users/overview", null, {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json"
+      });
+      logger.info(`${colors.info}Today Total Reward: ${response.todayTotalReward}${colors.reset}`);
+      logger.info(`${colors.info}All Time Total Reward: ${response.allTimeTotalReward}${colors.reset}`);
+      return response;
+    } catch (error) {
+      logger.error(`${colors.error}Failed to fetch user overview: ${error.message}${colors.reset}`);
+      throw error;
     }
   }
 
@@ -155,6 +170,15 @@ class PingAutomation {
 
   async processAccount(account) {
     const accountInfo = Utils.parseJwt(account);
+
+    // Fetch and log user overview
+    try {
+      const userOverview = await this.apiClient.getUserOverview(account);
+      logger.info(`${colors.info}User Overview: Processed successfully.${colors.reset}`);
+    } catch (error) {
+      logger.error(`${colors.error}Failed to fetch user overview for account: ${error.message}${colors.reset}`);
+    }
+
     const nodes = await this.nodeManager.getNodes(account);
 
     for (const node of nodes) {
@@ -176,7 +200,7 @@ class PingAutomation {
     }
   }
 
-  async start(intervalMinutes = 5) {
+  async start(intervalMinutes = 1) {
     if (this.isRunning) {
       logger.warn(`${colors.warning}Automation is already running${colors.reset}`);
       return;
