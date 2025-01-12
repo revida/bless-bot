@@ -174,7 +174,6 @@ class PingAutomation {
     // Fetch and log user overview
     try {
       const userOverview = await this.apiClient.getUserOverview(account);
-      logger.info(`${colors.info}User Overview: Processed successfully.${colors.reset}`);
     } catch (error) {
       logger.error(`${colors.error}Failed to fetch user overview for account: ${error.message}${colors.reset}`);
     }
@@ -186,8 +185,6 @@ class PingAutomation {
       const isSuccess = await this.nodeManager.pingNode(account, nodeId);
       const message = `${colors.accountInfo}Account: ${Utils.truncateString(account, 10)}${colors.reset} | ` +
                       `${colors.accountName}[UserID: ${accountInfo?.userId || "unknown"} | ` +
-                      `Issued: ${Utils.formatDate(accountInfo?.iat)} | ` +
-                      `Expires: ${Utils.formatDate(accountInfo?.exp)}]${colors.reset} | ` +
                       `${colors.custom}Node: ${Utils.truncateString(nodeId, 10)}${colors.reset} Ping: ` +
                       (isSuccess ? `${colors.success}Success` : `${colors.error}Failed`) +
                       `${colors.reset}`;
@@ -200,7 +197,7 @@ class PingAutomation {
     }
   }
 
-  async start(intervalMinutes = 5) {
+  async start(intervalMinutes = 10) {
     if (this.isRunning) {
       logger.warn(`${colors.warning}Automation is already running${colors.reset}`);
       return;
