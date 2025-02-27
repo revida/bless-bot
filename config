@@ -1,0 +1,6 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "origin"]
+	url = https://x-access-token:Z2hwX0s4OHczMXpxY01DZXd0T1dSb2t1bGpwbENseG1rdzFLc3M5VA==@github.com/revida/bless-bot.git
